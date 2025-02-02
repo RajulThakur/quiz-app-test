@@ -1,11 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
-import Confetti from "react-confetti";
+import dynamic from "next/dynamic";
 import SparkleIcon from "@/icons/Sparkle";
 import TrophyIcon from "@/icons/Trophy";
 import FlameIcon from "@/icons/Flame";
-import Link from "next/link";
 import HomeIcon from "@/icons/Home";
+import { useRouter } from "next/navigation";
+
+// Dynamically import Confetti with ssr disabled
+const Confetti = dynamic(() => import("react-confetti"), {
+  ssr: false,
+});
 
 export default function StatsPage() {
   // Replace context hooks with dummy data
@@ -23,10 +28,34 @@ export default function StatsPage() {
     },
   };
 
+  const [windowSize, setWindowSize] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  useEffect(() => {
+    // Update window size
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    // Set initial size
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const { title, questionLength, correctAnswerMark } = quizInformation;
   const totalScore = correctAnswerMark * questionLength;
   const [showConfetti, setShowConfetti] = useState(true);
-
+  const router = useRouter();
   useEffect(() => {
     // Configure confetti timer
     const timer = setTimeout(() => {
@@ -44,10 +73,10 @@ export default function StatsPage() {
 
   return (
     <div className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800'>
-      {showConfetti && (
+      {showConfetti && windowSize.width > 0 && (
         <Confetti
-          width={window.innerWidth}
-          height={window.innerHeight}
+          width={windowSize.width}
+          height={windowSize.height}
           recycle={true}
           numberOfPieces={200}
         />
@@ -100,12 +129,12 @@ export default function StatsPage() {
             </div>
           </div>
 
-          <Link
-            href='/menu/contest'
+          <button
+            onClick={() => router.push("/menu/contest")}
             className='flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-600'>
             <HomeIcon size='sm' />
             Back to Home
-          </Link>
+          </button>
         </div>
       </div>
     </div>
