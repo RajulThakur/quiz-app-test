@@ -28,9 +28,16 @@ export default function StatsPage() {
   const [showConfetti, setShowConfetti] = useState(true);
 
   useEffect(() => {
+    // Configure confetti timer
     const timer = setTimeout(() => {
       setShowConfetti(false);
     }, 5000);
+
+    // Play success sound
+    const audio = new Audio("/sounds/final.mp3"); // Adjust the path to your sound file
+    audio.play().catch((error) => {
+      console.log("Audio playback failed:", error);
+    });
 
     return () => clearTimeout(timer);
   }, []);

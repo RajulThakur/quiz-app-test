@@ -70,6 +70,7 @@ export function OptionButton({
     } else {
       // Handle wrong answer
       onAnswerSubmit(false);
+      
       setScore((prevScore) => prevScore - wrongAnswerMark);
       setStreak(0); // Reset streak
       setQuizData(questionId, {

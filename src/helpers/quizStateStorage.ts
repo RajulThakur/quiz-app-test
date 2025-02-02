@@ -2,7 +2,6 @@ interface QuizState {
   score: number;
   streak: number;
   exp: number;
-  currentQuestionIndex: number;
 }
 
 export function saveQuizState(quizId: string, state: QuizState) {
