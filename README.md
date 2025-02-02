@@ -1,8 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IQ Arena - Interactive Quiz Application
 
-## Getting Started
+IQ Arena is a modern, interactive quiz application built with Next.js, featuring real-time feedback, user authentication, and a competitive scoring system.
 
-First, run the development server:
+## 🌟 Features
+
+- **Interactive Quizzes**: Multiple-choice questions with instant feedback
+- **User Authentication**: Secure login with email/password and Google OAuth
+- **Dark Mode Support**: Seamless theme switching for better user experience
+- **Progress Tracking**: Track your daily streak and overall progress
+- **Competitive Rankings**: Compare your performance with other players
+- **Responsive Design**: Works perfectly on both mobile and desktop devices
+
+## 🚀 Tech Stack
+
+- **Framework**: Next.js 15
+- **Language**: TypeScript
+- **Authentication**: NextAuth.js
+- **Database**: PostgreSQL with Prisma ORM
+- **Styling**: Tailwind CSS
+- **State Management**: React Context
+- **Theme Management**: next-themes
+- **Form Validation**: Zod
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- Node.js (v18 or higher)
+- PostgreSQL
+- npm or yarn or pnpm or bun
+
+## 🛠️ Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/quiz-app.git
+cd quiz-app
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+3. Set up environment variables:
+   Create a `.env` file in the root directory with the following variables:
+
+```env
+DATABASE_URL="postgresql://username:password@localhost:5432/quiz_db"
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-key"
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+```
+
+4. Set up the database:
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+5. Run the development server:
 
 ```bash
 npm run dev
@@ -14,23 +81,45 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/               # Next.js app directory
+├── components/        # Reusable UI components
+├── context/          # React Context providers
+├── icons/            # SVG icons components
+├── lib/              # Utility functions and services
+├── types/            # TypeScript type definitions
+└── schema/           # Zod validation schemas
+```
 
-## Learn More
+## 🔒 Authentication
 
-To learn more about Next.js, take a look at the following resources:
+The application supports two authentication methods:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Email/Password authentication
+- Google OAuth
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎨 Styling
 
-## Deploy on Vercel
+- Uses Tailwind CSS for styling
+- Supports both light and dark modes
+- Custom animations and transitions
+- Responsive design patterns
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🤝 Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Next.js team for the amazing framework
+- Vercel for the deployment platform
+- All contributors who have helped with the project
