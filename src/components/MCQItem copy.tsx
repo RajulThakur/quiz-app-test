@@ -31,6 +31,7 @@ export function MCQItem({
           <div className="mt-4 space-y-4">
             {questions?.options.map((option, index) => (
               <OptionButton
+                questionId={questionId}
                 isCorrect={isCorrect}
                 key={index}
                 option={option}

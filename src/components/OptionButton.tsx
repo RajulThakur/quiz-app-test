@@ -17,7 +17,6 @@ export function OptionButton({
   option,
   showAnswer,
   setShowAnswer,
-  isCorrect,
   setIsCorrect,
 }: {
   questionId: string | undefined | number;
