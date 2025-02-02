@@ -83,7 +83,7 @@ export default function SignIn() {
                 if (result.success) {
                   router.push("/menu/contest");
                 } else {
-                  setError(result.errorCode);
+                  setError(result.errorCode || "Failed to sign in. Please try again.");
                 }
               } catch (error) {
                 console.log("error", error);
@@ -140,7 +140,7 @@ export default function SignIn() {
 
           <div className='mt-8 text-center'>
             <p className='text-sm text-gray-600 dark:text-gray-400'>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 href='/auth/signup'
                 className='font-medium text-blue-600 hover:underline dark:text-blue-400'>

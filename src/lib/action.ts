@@ -7,7 +7,9 @@ import {AuthError} from 'next-auth';
 export async function signInActionGoogle() {
   await signIn('google', {redirectTo: '/menu/contest'});
 }
-
+interface authError extends Error {
+  code: string;
+}
 export async function signOutAction() {
   await signOut({redirect: true, redirectTo: '/auth/signin'});
 }
@@ -20,7 +22,7 @@ export async function credentialsSignUpAction(email: string, password: string, n
       password,
     });
     return {success: true};
-  } catch (error: any) {
+  } catch (error) {
     console.error('Signup error:', error);
     return {success: false, error: 'User already exists', errorCode: 'USER_ALREADY_EXISTS'};
   }
@@ -30,10 +32,8 @@ export async function credentialsSignInAction(email: string, password: string) {
   try {
     await signIn('credentials', {email, password, redirect: true, redirectTo: '/menu/contest'});
     return {success: true};
-  } catch (error: any) {
-    console.error('Signin error:', error);
-    console.log('error', error.message);
-    return {success: false, error: error.message, errorCode: error.code};
+  } catch (error) {
+    return {success: false, error: (error as authError).message, errorCode: (error as authError).code};
   }
 }
 
