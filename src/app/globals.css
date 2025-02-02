@@ -13,12 +13,15 @@
   --surface-50: #ffffff;
   --surface-100: #fafafa;
   --surface-200: #f4f4f5;
+  --text-primary: #1e40af; /* blue-800 */
+  --text-secondary: #374151; /* gray-700 */
+  --text-tertiary: #4b5563; /* gray-600 */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #373737;
     --primary-50: #172554;
     --primary-100: #1e3a8a;
     --primary-500: #3b82f6;
@@ -27,6 +30,9 @@
     --surface-50: #18181b;
     --surface-100: #27272a;
     --surface-200: #3f3f46;
+    --text-primary: #60a5fa; /* blue-400 */
+    --text-secondary: #e5e7eb; /* gray-200 */
+    --text-tertiary: #9ca3af; /* gray-400 */
   }
 }
 html,
@@ -87,5 +93,13 @@ body {
   }
   50% {
     filter: hue-rotate(15deg);
+  }
+}
+
+@layer base {
+  .dark {
+    --text-primary: #60a5fa; /* blue-400 */
+    --text-secondary: #e5e7eb; /* gray-200 */
+    --text-tertiary: #9ca3af; /* gray-400 */
   }
 }
