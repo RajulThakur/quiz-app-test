@@ -1,13 +1,12 @@
 'use client';
-import {MCQItem} from '@/components/MCQItem';
-import {QuizFooter} from '@/components/QuizFooter';
+import { MCQItem } from '@/components/MCQItem';
+import { QuizFooter } from '@/components/QuizFooter';
 import QuizNav from '@/components/QuizNav';
-import {QuizSkeleton} from '@/components/QuizSkeleton';
-import {useQuizDataContext} from '@/context/QuizDataContext';
-import {Question} from '@/data/Question';
-import {Quiz} from '@/types/QuestionType';
-import {useParams} from 'next/navigation';
-import {useEffect, useState} from 'react';
+import { QuizSkeleton } from '@/components/QuizSkeleton';
+import { useQuizDataContext } from '@/context/QuizDataContext';
+import { Quiz } from '@/types/QuestionType';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 function QuizPage() {
   const params = useParams();
@@ -15,11 +14,14 @@ function QuizPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTopic, setSelectedTopic] = useState<Quiz | null>(null);
   const {setQuizInformation} = useQuizDataContext();
+  const api = "https://api.jsonserve.com/Uw5CrX";
   useEffect(() => {
     const fetchTopic = async () => {
       // Simulating API call with sample data
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSelectedTopic(Question[0]);
+      setIsLoading(true);
+      const response = await fetch(api);
+      const data = await response.json();
+      setSelectedTopic(data);
       setIsLoading(false);
     };
 

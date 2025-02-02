@@ -29,6 +29,7 @@ export async function createUser(data: CreateUserData) {
         email: data.email,
         name: data.name,
         image: data?.image || '',
+        googleId: data?.googleId || '',
         password: data.password,
       },
     });

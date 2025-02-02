@@ -1,34 +1,35 @@
-import {PrismaAdapter} from '@auth/prisma-adapter';
-import NextAuth, {CredentialsSignin, Session} from 'next-auth';
-import Google from 'next-auth/providers/google';
-import {createUser, getUserByEmail} from './dataService';
-import bcrypt from 'bcryptjs';
-import {AdapterUser} from 'next-auth/adapters';
-import Credentials from 'next-auth/providers/credentials';
-import {signInSchema} from '@/schema/zodSchema';
-import {prisma} from '@/lib/prisma';
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import NextAuth, { CredentialsSignin, Session } from "next-auth";
+import Google from "next-auth/providers/google";
+import { createUser, getUserByEmail } from "./dataService";
+import bcrypt from "bcryptjs";
+import { AdapterUser } from "next-auth/adapters";
+import Credentials from "next-auth/providers/credentials";
+import { signInSchema } from "@/schema/zodSchema";
+import { prisma } from "@/lib/prisma";
 interface UserIdSession extends Session {
-  user: AdapterUser & {guestID?: string};
+  user: AdapterUser & { guestID?: string };
 }
 class InvalidLoginError extends CredentialsSignin {
-  code = 'Invalid email or password';
+  code = "Invalid email or password";
 }
 class EmptyLoginError extends CredentialsSignin {
-  code = 'Provide both email and password';
+  code = "Provide both email and password";
 }
 
-export const {handlers, signIn, signOut, auth} = NextAuth({
+export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      allowDangerousEmailAccountLinking: true,
     }),
     Credentials({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: {label: 'Email', type: 'text'},
-        password: {label: 'Password', type: 'password'},
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         try {
@@ -36,7 +37,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             throw new EmptyLoginError();
           }
 
-          const {email, password} = await signInSchema.parseAsync({
+          const { email, password } = await signInSchema.parseAsync({
             email: credentials.email,
             password: credentials.password,
           });
@@ -54,41 +55,41 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
           return user;
         } catch (error) {
           if (error instanceof CredentialsSignin) throw error;
-          console.error('Authorization error:', error);
+          console.error("Authorization error:", error);
           throw new InvalidLoginError();
         }
       },
     }),
   ],
   callbacks: {
-    async signIn({user, account}) {
+    async signIn({ user, account }) {
       if (!user.email) return false;
       try {
-        if (account?.provider === 'credentials') {
+        if (account?.provider === "credentials") {
           return true;
         }
 
-        if (account?.provider === 'google') {
+        if (account?.provider === "google") {
           const existingUser = await getUserByEmail(user.email);
           if (existingUser) return true;
 
-          await createUser({
+          const newUser = await createUser({
             email: user.email,
-            name: user.name ?? '',
-            image: user.image ?? '',
-            googleId: user.id ?? '',
+            name: user.name ?? "",
+            image: user.image ?? "",
+            googleId: user.id ?? "",
           });
-          return true;
+          return !!newUser;
         }
 
         return false;
       } catch (error) {
-        console.error('Sign-in error:', error);
+        console.error("Sign-in error:", error);
         return false;
       }
     },
 
-    async session({session}: {session: UserIdSession}) {
+    async session({ session }: { session: UserIdSession }) {
       if (!session.user.email) return session;
 
       const user = await getUserByEmail(session.user.email);
@@ -99,6 +100,6 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
     },
   },
   pages: {
-    signIn: '/auth/signin',
+    signIn: "/auth/signin",
   },
 });

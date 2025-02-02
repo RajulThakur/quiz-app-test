@@ -49,4 +49,5 @@ export interface CreateUserData {
   name?: string;
   image?: string;
   password?: string;
+  googleId?: string;
 }

@@ -16,10 +16,10 @@ model User {
   exp           Int             @default(0)
   password      String?
   image         String?
+  googleId      String?
   accounts      Account[]
   sessions      Session[]
   createdAt DateTime @default(now())
-  googleId      String?
   updatedAt DateTime @updatedAt
 }
  
