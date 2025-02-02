@@ -7,7 +7,13 @@ import {useQuizContext} from '@/context/QuizContext';
 import {getQuestionDataFromLocalStorage} from '@/helpers/getQuizLocalStorage';
 import {useParams} from 'next/navigation';
 
-export function MCQItem({questions}: {questions: Question[] | undefined}) {
+export function MCQItem({
+  questions,
+  onAnswerSubmit,
+}: {
+  questions: Question[] | undefined;
+  onAnswerSubmit: (isCorrect: boolean) => void;
+}) {
   const quizID = useParams();
   const {currentQuestionIndex} = useQuizContext();
   const currentQuestion = questions?.[currentQuestionIndex];
@@ -16,6 +22,8 @@ export function MCQItem({questions}: {questions: Question[] | undefined}) {
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const questionData = getQuestionDataFromLocalStorage(quizIDString, questionId);
+  const isAnswered = questionData?.isAnswered;
+  const isMCQCorrect = questionData?.isCorrect;
 
   useEffect(() => {
     setShowAnswer(false);
@@ -33,7 +41,7 @@ export function MCQItem({questions}: {questions: Question[] | undefined}) {
             {currentQuestion?.options.map((option, index) => (
               <OptionButton
                 questionId={questionId}
-                isCorrect={isCorrect}
+                onAnswerSubmit={onAnswerSubmit}
                 key={index}
                 option={option}
                 showAnswer={showAnswer ?? false}
@@ -42,21 +50,21 @@ export function MCQItem({questions}: {questions: Question[] | undefined}) {
               />
             ))}
           </div>
-          {(showAnswer || questionData?.isAnswered) && (
+          {(showAnswer || isAnswered) && (
             <p
               className={`mt-4 rounded-lg p-3 ${
-                isCorrect || questionData?.isCorrect
+                isCorrect || isMCQCorrect
                   ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100'
                   : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100'
               }`}>
-              {isCorrect || questionData?.isCorrect ? '✨ Correct!' : '❌ Wrong answer'}
+              {isCorrect || isMCQCorrect ? '✨ Correct!' : '❌ Wrong answer'}
             </p>
           )}
         </div>
       </div>
-      {(showAnswer || questionData?.isAnswered) &&
+      {(showAnswer || isAnswered) &&
         currentQuestion &&
-        !(isCorrect || questionData?.isCorrect) && (
+        !(isCorrect || isMCQCorrect) && (
           <Explation explanation={currentQuestion.detailed_solution} />
         )}
     </div>
