@@ -22,5 +22,8 @@ jobs:
           passphrase: ${{ secrets.SSH_KEY_PASSPHRASE }}
           port: ${{ secrets.PORT }}
           script: |
-            whoami
-            ls -al
+            cd quiz-app-test
+            git pull origin main
+            npm install
+            npm run build
+            pm2 restart quiz-app-test
