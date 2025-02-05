@@ -106,6 +106,7 @@ The application supports two authentication methods:
 ## 🎨 Styling
 
 - Uses Tailwind CSS for styling
+- cheacking
 - Supports both light and dark modes
 - Custom animations and transitions
 - Responsive design patterns
