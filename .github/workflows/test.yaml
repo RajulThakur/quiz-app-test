@@ -1,0 +1,30 @@
+name: GitHub Actions Test
+run-name: "Test"
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test CI Basic
+        run: echo "CI is working!"
+
+      - name: Test Environment
+        run: |
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Workspace: ${{ github.workspace }}"
+          echo "Repository: ${{ github.repository }}"
+
+      - name: Test Multi-line Commands
+        run: |
+          echo "Step 1: Starting test"
+          echo "Step 2: Processing..."
+          echo "Step 3: Test complete!"
+
+      - name: Test Exit Codes
+        run: |
+          echo "Testing success exit code"
+          exit 0
